@@ -2,6 +2,9 @@
 
 A command-line AI agent that conducts **structured, role-specific technical interviews**, scores each answer in real-time, and produces a final hiring evaluation — all powered by **Groq** (free, fast LLaMA 3.3 70B).
 
+> **Agent Definition (Step 1):**
+> *"My agent takes a **job role + candidate's typed answers** and produces a **scored interview transcript with a final hire/no-hire evaluation**."*
+
 ---
 
 ## Demo

@@ -47,19 +47,58 @@ def run_new_session() -> None:
     """Collect role + skills, generate questions, run the full interview loop."""
     print_section("New Interview Session")
 
-    role = prompt_input("Job role / title", "Software Engineer")
+    # ── Role selection ────────────────────────────────────────────────────────
+    ROLES = [
+        "Software Engineer",
+        "Frontend Developer",
+        "Backend Developer",
+        "Full Stack Developer",
+        "Data Scientist",
+        "Machine Learning Engineer",
+        "DevOps / Cloud Engineer",
+        "Data Analyst",
+        "Mobile Developer (Android/iOS)",
+        "QA / Test Engineer",
+        "Product Manager",
+        "Other (type your own)",
+    ]
+
+    ROLE_SKILLS = {
+        "Software Engineer":           "Python, Data Structures, OOP, REST APIs, Git",
+        "Frontend Developer":          "HTML, CSS, JavaScript, React, Responsive Design",
+        "Backend Developer":           "Python, FastAPI, PostgreSQL, REST APIs, Docker",
+        "Full Stack Developer":        "React, Node.js, REST APIs, SQL, Docker",
+        "Data Scientist":              "Python, Pandas, Machine Learning, Statistics, SQL",
+        "Machine Learning Engineer":   "Python, PyTorch, Model Deployment, MLOps, Statistics",
+        "DevOps / Cloud Engineer":     "Docker, Kubernetes, CI/CD, AWS, Linux",
+        "Data Analyst":                "SQL, Python, Excel, Tableau, Statistics",
+        "Mobile Developer (Android/iOS)": "Kotlin/Swift, REST APIs, UI Design, Git",
+        "QA / Test Engineer":          "Selenium, Pytest, Test Planning, CI/CD, Bug Tracking",
+        "Product Manager":             "Agile, Roadmapping, Stakeholder Management, Analytics",
+    }
+
+    role_choice = prompt_choice("Select the job role for this interview", ROLES)
+
+    if role_choice == "Other (type your own)":
+        role = prompt_input("Enter the job role / title")
+        skills_default = "Python, REST APIs, SQL"
+    else:
+        role = role_choice
+        skills_default = ROLE_SKILLS.get(role, "Python, REST APIs, SQL")
+
     skills = prompt_input(
         "Key skills to focus on (comma-separated)",
-        "Python, REST APIs, SQL",
+        skills_default,
     )
     num_q = prompt_input(
-        f"Number of questions",
+        "Number of questions",
         str(DEFAULT_NUM_QUESTIONS),
     )
     try:
         num_q = max(5, min(12, int(num_q)))
     except ValueError:
         num_q = DEFAULT_NUM_QUESTIONS
+
 
     session = make_empty_session(role, skills)
 

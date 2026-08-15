@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Secrets — NEVER commit this
+.env
+
+# Output files (optional — remove if you want to commit sample outputs)
+output/
+
+# OS
+.DS_Store
+Thumbs.db

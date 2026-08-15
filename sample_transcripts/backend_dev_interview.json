@@ -1,0 +1,67 @@
+{
+  "session_id": "20260815_100000",
+  "role": "Backend Developer",
+  "skills": "Python, FastAPI, PostgreSQL, REST APIs, Docker",
+  "timestamp": "2026-08-15T10:00:00",
+  "questions": [
+    "Can you explain the difference between synchronous and asynchronous programming in Python, and when would you choose one over the other?",
+    "What is the purpose of database indexing in PostgreSQL, and how do you decide which columns to index?",
+    "How would you design a REST API endpoint that needs to handle file uploads efficiently for large files (e.g., 500MB videos)?",
+    "You're experiencing N+1 query problems in a FastAPI application using SQLAlchemy. How would you identify and fix this?",
+    "Describe how you would containerize a FastAPI application using Docker and make it production-ready.",
+    "How would you implement rate limiting in a REST API to prevent abuse, and what tools or strategies would you use?"
+  ],
+  "transcript": [
+    {
+      "question": "Can you explain the difference between synchronous and asynchronous programming in Python, and when would you choose one over the other?",
+      "answer": "Synchronous programming executes code line by line, blocking until each operation completes. Asynchronous programming, using Python's asyncio library with async/await syntax, allows the program to continue executing other tasks while waiting for I/O operations. I'd choose async for I/O-bound tasks like database queries, API calls, or file operations where we spend most time waiting. For CPU-bound tasks like image processing or ML inference, sync with multiprocessing is better since the GIL prevents true parallel threading in Python.",
+      "score": 9,
+      "feedback": "Excellent answer — correctly distinguishes I/O-bound vs CPU-bound use cases and mentions GIL, demonstrating solid Python concurrency knowledge."
+    },
+    {
+      "question": "What is the purpose of database indexing in PostgreSQL, and how do you decide which columns to index?",
+      "answer": "Indexes speed up SELECT queries by creating a data structure (usually B-tree) that allows PostgreSQL to find rows without scanning the whole table. I index columns that appear frequently in WHERE clauses, JOIN conditions, and ORDER BY. I avoid indexing low-cardinality columns like booleans. I also use EXPLAIN ANALYZE to see if queries are doing sequential scans and identify which indexes would help. The tradeoff is that indexes slow down writes and take disk space.",
+      "score": 8,
+      "feedback": "Strong answer covering B-tree, cardinality, EXPLAIN ANALYZE, and write overhead tradeoffs — shows practical experience."
+    },
+    {
+      "question": "How would you design a REST API endpoint that needs to handle file uploads efficiently for large files (e.g., 500MB videos)?",
+      "answer": "I'd use multipart upload rather than loading the entire file in memory. In FastAPI, I'd use UploadFile which streams the file. For 500MB files, I'd stream directly to object storage like AWS S3 or Google Cloud Storage using presigned URLs, so the client uploads directly to storage without going through the API server. I'd also implement chunked uploads with resumable upload support, return a job ID to the client, and process the file asynchronously in a background worker like Celery. Progress can be tracked via WebSocket or polling.",
+      "score": 9,
+      "feedback": "Excellent — mentions presigned URLs, streaming, chunked uploads, async processing with Celery, and avoiding memory issues; demonstrates production-level thinking."
+    },
+    {
+      "question": "You're experiencing N+1 query problems in a FastAPI application using SQLAlchemy. How would you identify and fix this?",
+      "answer": "N+1 happens when you load a list of objects and then make a separate query for each object's relationship. I'd identify it by enabling SQLAlchemy's echo=True or using a profiler like SQLAlchemy-Queries or pyinstrument to count queries. To fix it, I'd use eager loading with joinedload() or selectinload() for related data. If the relationship is big, I might use selectinload to avoid a huge JOIN. I can also write custom SQL queries with joins for complex cases.",
+      "score": 8,
+      "feedback": "Good diagnosis and fix using SQLAlchemy's eager loading options; mentioning selectinload vs joinedload shows practical ORM knowledge."
+    },
+    {
+      "question": "Describe how you would containerize a FastAPI application using Docker and make it production-ready.",
+      "answer": "I'd write a Dockerfile using a slim Python base image, use multi-stage builds to keep the image small, run the app as a non-root user for security, and use gunicorn with uvicorn workers as the ASGI server. I'd use docker-compose for local dev with separate services for the app, PostgreSQL, and Redis. For production I'd push to a container registry, use health checks in the Dockerfile, set resource limits, and store secrets using environment variables or Docker secrets rather than baking them into the image.",
+      "score": 9,
+      "feedback": "Very thorough — covers multi-stage builds, non-root user, gunicorn+uvicorn, secrets management, and health checks; production-ready thinking evident."
+    },
+    {
+      "question": "How would you implement rate limiting in a REST API to prevent abuse, and what tools or strategies would you use?",
+      "answer": "Rate limiting tracks how many requests a client makes in a time window. I'd use Redis to store request counts keyed by IP or user ID with a TTL equal to the window. In FastAPI, I'd implement this as middleware or use a library like slowapi which is based on limits. For algorithm, I'd use the sliding window log or token bucket for fairness. I'd return 429 Too Many Requests with Retry-After headers. For distributed systems behind load balancers, Redis ensures all instances share the same counter.",
+      "score": 9,
+      "feedback": "Excellent — covers Redis, distributed state, sliding window vs token bucket algorithms, slowapi library, and correct HTTP status codes."
+    }
+  ],
+  "evaluation": {
+    "overall_score": 8.7,
+    "strengths": [
+      "Deep Python concurrency knowledge including GIL implications",
+      "Production-level API design with presigned URLs and async processing",
+      "Strong PostgreSQL and SQLAlchemy ORM expertise",
+      "Security-aware Docker practices (non-root, secrets management)"
+    ],
+    "gaps": [
+      "Did not mention monitoring/observability (e.g., structured logging, Prometheus)",
+      "No mention of CI/CD pipelines or deployment automation"
+    ],
+    "hire_recommendation": "Strong Yes",
+    "recommendation_reason": "The candidate demonstrated exceptional backend knowledge across all six areas with production-level thinking in every answer. Minor gaps in observability and CI/CD are easily addressed on the job. This candidate would be immediately productive on a backend team."
+  }
+}

@@ -60,6 +60,57 @@ Number of questions (default: 6):
 
 ---
 
+## Architecture
+
+```mermaid
+flowchart TD
+    A([👤 User]) -->|Selects role + skills\nSets question count| B
+
+    subgraph CLI ["🖥️  agent.py — CLI Loop"]
+        B[Main Menu\nnew / resume / view]
+        B --> C[run_new_session]
+        B --> D[run_resume_session]
+        C & D --> E[_run_interview_loop]
+    end
+
+    subgraph PROMPTS ["📝  prompts.py"]
+        P1[Question Generator Prompt]
+        P2[Scorer Prompt]
+        P3[Evaluator Prompt]
+    end
+
+    subgraph LLM ["⚡  Groq API — LLaMA 3.3 70B"]
+        G1[Generate Questions]
+        G2[Score Each Answer]
+        G3[Final Evaluation]
+    end
+
+    subgraph CORE ["🧠  Core Modules"]
+        F[interviewer.py\ngenerate_questions]
+        H[interviewer.py\nscore_answer]
+        I[evaluator.py\ngenerate_evaluation]
+    end
+
+    subgraph STORAGE ["💾  storage.py"]
+        J[Auto-save JSON\nafter every answer]
+        K[Export CSV\non completion]
+    end
+
+    E -->|Per question| F
+    F --> P1 --> G1 -->|5–12 questions| E
+    E -->|Per answer| H
+    H --> P2 --> G2 -->|score 0–10 + feedback| E
+    E --> J
+    E -->|All done| I
+    I --> P3 --> G3 -->|strengths, gaps,\nhire recommendation| E
+    E --> K
+    K -->|Results| A
+```
+
+> **Flow summary:** User picks a role → `agent.py` calls `interviewer.py` to generate questions via Groq → for each answer, Groq scores 0–10 in real time → `storage.py` auto-saves after every answer → once all questions are done, `evaluator.py` sends the full transcript to Groq for a final hiring evaluation → output saved as JSON + CSV.
+
+---
+
 ## Prerequisites
 
 - Python 3.10 or higher

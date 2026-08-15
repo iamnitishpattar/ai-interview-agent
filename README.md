@@ -19,6 +19,27 @@ What would you like to do?
   2. Resume a saved session (1 incomplete)
   3. View all past sessions
   4. Exit
+  Enter number (1–4): 1
+
+────────────── New Interview Session ──────────────
+
+Select the job role for this interview
+  1.  Software Engineer
+  2.  Frontend Developer
+  3.  Backend Developer
+  4.  Full Stack Developer
+  5.  Data Scientist
+  6.  Machine Learning Engineer
+  7.  DevOps / Cloud Engineer
+  8.  Data Analyst
+  9.  Mobile Developer (Android/iOS)
+  10. QA / Test Engineer
+  11. Product Manager
+  12. Other (type your own)
+  Enter number (1–12): 3
+
+Key skills to focus on (default: Python, FastAPI, PostgreSQL, REST APIs, Docker):
+Number of questions (default: 6):
 ```
 
 ---
@@ -27,7 +48,9 @@ What would you like to do?
 
 | Feature | Details |
 |---------|---------|
+| 📋 Role selection | Pick from 11 predefined roles or type your own |
 | 🎯 Role-aware questions | Generates 5–12 tailored questions from role + skills |
+| 🔑 Smart skill defaults | Skills field auto-filled based on selected role |
 | 📊 Live scoring | Every answer scored 0–10 with one-line feedback |
 | 💾 Auto-save | Progress saved after every answer — never lose work |
 | 🔄 Resume sessions | Continue any incomplete session from where you left off |
@@ -49,8 +72,8 @@ What would you like to do?
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/interview-agent.git
-cd interview-agent
+git clone https://github.com/iamnitishpattar/ai-interview-agent.git
+cd ai-interview-agent
 ```
 
 ### 2. Create a virtual environment
@@ -107,12 +130,12 @@ You'll be shown a menu:
 ### Starting a new session
 
 1. Select option **1**
-2. Enter the **job role** (e.g. `Backend Developer`)
-3. Enter **key skills** to focus on (e.g. `Python, FastAPI, PostgreSQL, Docker`)
-4. Enter the **number of questions** (5–12, default 6)
+2. **Pick a role** from the numbered list (11 options + "Other")
+3. **Edit skills** — auto-filled for your chosen role, or type your own
+4. Set the **number of questions** (5–12, default 6)
 5. Answer each question — press **Enter twice** when done
-6. View your score after each answer
-7. Receive a full evaluation at the end
+6. View your **live score + feedback** after every answer
+7. Receive a **full evaluation** at the end (overall score, strengths, gaps, hire recommendation)
 
 ### Resuming a session
 
